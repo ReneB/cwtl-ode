@@ -1,0 +1,14 @@
+{
+  "production": {
+    "key": "",
+    "userName": "",
+    "url": "https://api.namecheap.com/xml.response",
+    "clientIp": ""
+  },
+  "sandbox": {
+    "key": "9zzzzzzzzzzzzzzzzzzzzzzzzzzzzzf",
+    "userName": "myUserID",
+    "url": "https://api.sandbox.namecheap.com/xml.response",
+    "clientIp": "8.8.8.8"
+  }
+}
