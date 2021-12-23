@@ -1,7 +1,9 @@
 #!/bin/bash
 
+SANDBOX_ENVIRONMENT="sandbox"
+
 if [ -z $1 ]
-then ENVIRONMENT="sandbox"
+then ENVIRONMENT=$SANDBOX_ENVIRONMENT
 else ENVIRONMENT=$1
 fi
 
@@ -67,38 +69,30 @@ getConfig () {
 # CERTBOT_ALL_DOMAINS: A comma-separated list of all domains challenged for the current
 
 # NameCheap's production API service base
-SERVICEURL="https://api.namecheap.com/xml.response"
-
+SERVICEURL=$(getConfig "url")
 
 # --------------- Start configurable section --------------------------------
 
 # your NameCheap login ID
 # (their docs mention both API User and NC User, but they are the same
 # in our scenario because we are editing our own records and not one of our 'clients')
-NCUSER=myUserID
+
+NCUSER=$(getConfig "userName")
 
 # your whitelisted IP address
-CLIENTIP=8.8.8.8
+CLIENTIP=$(getConfig "clientIp")
 
 # your API Key
-NCAPIKEY=9zzzzzzzzzzzzzzzzzzzzzzzzzzzzzf4
-
-#
-# SANDBOX TESTING
-#
-# For sandbox testing first, you'll probably want to override some of these
-# then you can just run the script directly and see if you preserve
-# all your other host records and get the new acme validation TXT record
-# with the dummy value you specify below
-#
-#SERVICEURL="https://api.sandbox.namecheap.com/xml.response"
-#NCAPIKEY=2czzzzzzzzzzzzzzzzzzzzzzzzzzzz1c
-#CERTBOT_DOMAIN=crosswire.org
-#CERTBOT_VALIDATION=xyzzq
-
+NCAPIKEY=$(getConfig "key")
 
 # number of seconds to wait between checks for our certbot validation records to finish propagation
 WAITSECONDS=10
+
+if [[ "$ENVIRONMENT" = "$SANDBOX_ENVIRONMENT" ]]
+then
+	CERTBOT_DOMAIN=$(getConfig "domain")
+	CERTBOT_VALIDATION=$(getConfig "challenge")
+fi
 
 # if we are running a local bind server to cache DNS entries, we probably want to flush our cache
 # between each check for our challenge certificate

@@ -9,6 +9,8 @@
     "key": "9zzzzzzzzzzzzzzzzzzzzzzzzzzzzzf",
     "userName": "myUserID",
     "url": "https://api.sandbox.namecheap.com/xml.response",
-    "clientIp": "8.8.8.8"
+    "clientIp": "8.8.8.8",
+    "domain": "crosswire.org",
+    "challenge": "xyzzq"
   }
 }
