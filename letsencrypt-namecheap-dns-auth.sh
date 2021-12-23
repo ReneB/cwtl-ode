@@ -96,10 +96,13 @@ fi
 
 # if we are running a local bind server to cache DNS entries, we probably want to flush our cache
 # between each check for our challenge certificate
-FLUSH_LOCAL_BIND_SERVER=true
+command -v rndc >> /dev/null
+if [[ $? -eq 0 ]]
+then
+  FLUSH_LOCAL_BIND_SERVER=true
+fi
 
-# --------------- End configurable section --------------------------------
-
+# --------------- End configuration section --------------------------------
 
 # Let's grab all our current DNS records
 
