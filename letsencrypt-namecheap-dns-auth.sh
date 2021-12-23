@@ -1,6 +1,11 @@
 #!/bin/bash
 
-####### !!!!!!!!!!!!!  W A R N I N G !!!!!!!!!!!!! ####### 
+if [ -z $1 ]
+then ENVIRONMENT="sandbox"
+else ENVIRONMENT=$1
+fi
+
+####### !!!!!!!!!!!!!  W A R N I N G !!!!!!!!!!!!! #######
 #
 #  NameCheap only has an API for setting all host DNS records
 #  i.e., we can't simply update one TXT row
@@ -45,6 +50,10 @@
 #	Troy A. Griffitts <scribe@crosswire.org>
 #	https://crosswire.org
 #
+
+getConfig () {
+    echo $(ruby get-config.rb $1 $ENVIRONMENT)
+}
 
 #
 # START OF SCARY SCRIPT ----------------------------------------------------
