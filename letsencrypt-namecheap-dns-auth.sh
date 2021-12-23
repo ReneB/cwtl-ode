@@ -53,8 +53,18 @@ fi
 #	https://crosswire.org
 #
 
+LOGFILE="logfile.txt"
+
 getConfig () {
     echo $(ruby get-config.rb $1 $ENVIRONMENT)
+}
+
+startLog () {
+    echo "" > $LOGFILE
+}
+
+log () {
+    echo $1 >> $LOGFILE
 }
 
 #
@@ -148,9 +158,12 @@ wget -O /tmp/testapi.out "${SERVICEURL}?ClientIp=${CLIENTIP}&ApiUser=${NCUSER}&A
 # Because we "echo" output here, certbot thinks something might have gone wrong.  It doesn't effect
 # the successful completion of the domain cert renewal.  I like to see the output.  You might rather like to
 # see certbot think everything went perfect and comment out the "echo" lines below.
+
+startLog
+
 FOUND=false
 while [[ "${FOUND}" != "true" ]]; do
-	echo "Sleeping for ${WAITSECONDS} seconds..."
+	log "Sleeping for ${WAITSECONDS} seconds..."
 	sleep ${WAITSECONDS}
 	if [[ "${FLUSH_LOCAL_BIND_SERVER}" == "true" ]]; then
 		rndc flush
@@ -160,9 +173,9 @@ while [[ "${FOUND}" != "true" ]]; do
 	CURRENT_ACME_VALIDATION=$(dig -t TXT _acme-challenge.${CERTBOT_DOMAIN}|grep "^_acme-challenge.${CERTBOT_DOMAIN}."|cut -d\" -f 2)
 	if [[ "${CERTBOT_VALIDATION}" == "${CURRENT_ACME_VALIDATION}" ]]; then
 		FOUND=true
-		echo "Found!"
+		log "Found!"
 	else
-		echo "Not yet found."
+		log "Not yet found. CERTBOT_VALIDATION=${CERTBOT_VALIDATION} - CURRENT_ACME_VALIDATION=${CURRENT_ACME_VALIDATION}"
 	fi
 done
 
