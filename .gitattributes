@@ -1,1 +1,2 @@
 namecheap-config.json filter=git-crypt diff=git-crypt
+letsencrypt-config.json filter=git-crypt-raspberrypi diff=git-crypt-raspberrypi

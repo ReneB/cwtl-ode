@@ -6,8 +6,9 @@ def usage
   USAGE
 end
 
-environment = ARGV[1] || "sandbox"
-variable = ARGV[0]
+environment = ARGV[2] || "sandbox"
+variable = ARGV[1]
+file = ARGV[0]
 
 unless variable
   usage
@@ -16,9 +17,7 @@ end
 
 require 'json'
 
-FILE = 'namecheap-config.json'
-
-config = JSON.parse(File.read(FILE))
+config = JSON.parse(File.read(file))
 
 env = config[environment]
 

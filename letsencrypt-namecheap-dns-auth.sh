@@ -58,7 +58,7 @@ export SRC_DIR=$(dirname "$0")
 LOGFILE="logfile.txt"
 
 getConfig () {
-    echo $(ruby $SRC_DIR/get-config.rb $1 $ENVIRONMENT)
+    echo $(ruby $SRC_DIR/get-config.rb "namecheap-config.json" $1 $ENVIRONMENT)
 }
 
 startLog () {
