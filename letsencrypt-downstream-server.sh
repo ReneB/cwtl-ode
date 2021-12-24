@@ -29,6 +29,9 @@ SYNC_DIR=$(getConfig "syncDir")
 
 DOMAIN=$(getConfig "domain")
 
+MARKER_FILE=$SRC_DIR/$SYNC_DIR/$(getConfig "markerFile")
+PREVIOUS_TIMESTAMP=$(cat $MARKER_FILE)
+
 if [ ! -d $SSL_DIR ]; then
     mkdir -p $SSL_DIR
 fi
@@ -39,6 +42,13 @@ fi
 
 sftp -r $SYNC_ACCOUNT@$UPSTREAM_DOMAIN:$SYNC_DIR/* $SRC_DIR/$SYNC_DIR
 
+NEW_TIMESTAMP=$(cat $MARKER_FILE)
+
+if [ "$PREVIOUS_TIMESTAMP" = "$CURRENT_TIMESTAMP" ]
+then
+	echo "No updates since last sync. Not copying keystore, not restarting Tomcat."
+	exit
+fi
 
 cp $SRC_DIR/$SYNC_DIR/$DOMAIN.jks $SSL_DIR
 
