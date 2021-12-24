@@ -7,6 +7,8 @@ then ENVIRONMENT=$SANDBOX_ENVIRONMENT
 else ENVIRONMENT=$1
 fi
 
+export SRC_DIR=$(dirname "$0")
+
 ####### !!!!!!!!!!!!!  W A R N I N G !!!!!!!!!!!!! #######
 #
 #  NameCheap only has an API for setting all host DNS records
@@ -56,7 +58,7 @@ fi
 LOGFILE="logfile.txt"
 
 getConfig () {
-    echo $(ruby get-config.rb $1 $ENVIRONMENT)
+    echo $(ruby $SRC_DIR/get-config.rb $1 $ENVIRONMENT)
 }
 
 startLog () {

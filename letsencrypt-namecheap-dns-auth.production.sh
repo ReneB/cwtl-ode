@@ -1,3 +1,5 @@
 #!/bin/bash
 
-bash ./letsencrypt-namecheap-dns-auth.sh production
+export SRC_DIR=$(dirname "$0")
+
+bash "$SRC_DIR/letsencrypt-namecheap-dns-auth.sh" production
