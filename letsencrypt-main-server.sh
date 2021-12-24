@@ -29,6 +29,7 @@ PASSWORD=$(getConfig "keystorePassword")
 MAILADDRESS=$(getConfig "mailAddress")
 TARGET_ACCOUNT=$(getConfig "syncAccount")
 SYNC_DIR=$(getConfig "syncDir")
+MARKER_FILE=$(getConfig "markerFile")
 
 DOMAIN=$(getConfig "domain")
 WILDCARD_DOMAIN="*.$DOMAIN"
@@ -60,5 +61,6 @@ chown -R $TOMCAT_USER:$TOMCAT_USER $SSL_DIR
 mkdir -p /home/$TARGET_ACCOUNT/$SYNC_DIR
 
 cp $SSL_DIR/$DOMAIN.jks /home/$TARGET_ACCOUNT/$SYNC_DIR
+echo $(date) > /home/$TARGET_ACCOUNT/$SYNC_DIR/$MARKER_FILE
 
 chown -R $TARGET_ACCOUNT:$TARGET_ACCOUNT /home/$TARGET_ACCOUNT/$SYNC_DIR
