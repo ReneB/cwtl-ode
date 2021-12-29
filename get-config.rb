@@ -17,7 +17,7 @@ end
 
 require 'json'
 
-config = JSON.parse(File.read(file))
+config = JSON.parse(File.read(File.expand_path(file, __dir__)))
 
 env = config[environment]
 
