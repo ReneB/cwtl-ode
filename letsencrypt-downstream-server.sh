@@ -40,7 +40,7 @@ if [ ! -d $SRC_DIR/$SYNC_DIR ]; then
     mkdir -p $SRC_DIR/$SYNC_DIR
 fi
 
-sftp -r $SYNC_ACCOUNT@$DOMAIN:$SYNC_DIR/* $SRC_DIR/$SYNC_DIR
+sftp -i id_downstream_server -r $SYNC_ACCOUNT@$DOMAIN:$SYNC_DIR/* $SRC_DIR/$SYNC_DIR
 
 CURRENT_TIMESTAMP=$(cat $MARKER_FILE)
 
