@@ -19,6 +19,7 @@ else
 fi
 
 TOMCAT_HOME=$(ls -d /var/lib/tomcat* | tail -n1)
+TOMCAT_CONFIG=$(ls -d /etc/tomcat* | tail -n1)
 TOMCAT_USER=$(ls -ld $TOMCAT_HOME/webapps | awk '{print $3}')
 TOMCAT_SERVICE=$(echo $TOMCAT_HOME | awk '{n=split($1,A,"/"); print A[n]}')
 SSL_DIR=$TOMCAT_HOME/ssl
@@ -53,6 +54,9 @@ fi
 cp $SRC_DIR/$SYNC_DIR/$DOMAIN.jks $SSL_DIR
 
 chown -R $TOMCAT_USER:$TOMCAT_USER $SSL_DIR
+
+# Replace the certificate password in the server.xml file with the proper password.
+sed -i -e "s/certificateKeystorePassword=\".*\"/certificateKeystorePassword=\"$PASSWORD\"/g" $TOMCAT_CONFIG/server.xml
 
 # This line is required when you refresh the certificates because Tomcat needs
 # to be restarted to load a new certificate.
