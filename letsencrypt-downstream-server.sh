@@ -30,7 +30,7 @@ SYNC_DIR=$(getConfig "syncDir")
 DOMAIN=$(getConfig "domain")
 
 MARKER_FILE=$SRC_DIR/$SYNC_DIR/$(getConfig "markerFile")
-PREVIOUS_TIMESTAMP=$(cat $MARKER_FILE)
+PREVIOUS_TIMESTAMP=$(if [ -f $MARKER_FILE ]; then echo "$(cat $MARKER_FILE)"; else echo "0"; fi)
 
 if [ ! -d $SSL_DIR ]; then
     mkdir -p $SSL_DIR
@@ -40,9 +40,9 @@ if [ ! -d $SRC_DIR/$SYNC_DIR ]; then
     mkdir -p $SRC_DIR/$SYNC_DIR
 fi
 
-sftp -r $SYNC_ACCOUNT@$UPSTREAM_DOMAIN:$SYNC_DIR/* $SRC_DIR/$SYNC_DIR
+sftp -r $SYNC_ACCOUNT@$DOMAIN:$SYNC_DIR/* $SRC_DIR/$SYNC_DIR
 
-NEW_TIMESTAMP=$(cat $MARKER_FILE)
+CURRENT_TIMESTAMP=$(cat $MARKER_FILE)
 
 if [ "$PREVIOUS_TIMESTAMP" = "$CURRENT_TIMESTAMP" ]
 then
