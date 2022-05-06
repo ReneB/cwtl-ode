@@ -1,1 +1,4 @@
 logfile.txt
+
+sync-ssl-keystore/*
+sync-sql-data/*
