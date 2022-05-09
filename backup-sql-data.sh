@@ -17,13 +17,12 @@ else
 	ENVIRONMENT=$SANDBOX_ENVIRONMENT
 fi
 
+
 SYNC_ACCOUNT=$(getConfig "syncAccount")
 SYNC_DIR=$(getConfig "syncDir")
 
-DOMAIN=$(getConfig "domain")
-
 MARKER_FILE=$SRC_DIR/$SYNC_DIR/$(getConfig "markerFile")
-PREVIOUS_TIMESTAMP=$(if [ -f $MARKER_FILE ]; then echo "$(cat $MARKER_FILE)"; else echo "0"; fi)
+echo $(date) > $MARKER_FILE
 
 if [ ! -d $SRC_DIR/$SYNC_DIR ]; then
     mkdir -p $SRC_DIR/$SYNC_DIR
@@ -35,9 +34,13 @@ TIMESTAMP=$(date +"%y%m%d%H%M")
 
 pg_dump --file=$SRC_DIR/$SYNC_DIR/$COUNTRY_NAME.$TIMESTAMP.sql -d "$DATABASE_CONNECTION_STRING"
 
-echo $(date) > $MARKER_FILE
+SUCCESS_FILE=$SRC_DIR/$SYNC_DIR/$(getConfig "successFile")
+echo $(date) > $SUCCESS_FILE
 
-echo put -r $SRC_DIR/$SYNC_DIR $SYNC_DIR/$COUNTRY_NAME | sftp -i $SRC_DIR/id_downstream_server -b - $SYNC_ACCOUNT@$DOMAIN
+DOMAIN=$(getConfig "domain")
+
+ssh -i $SRC_DIR/id_downstream_server $SYNC_ACCOUNT@$DOMAIN "mkdir -p ~/$SYNC_DIR/$COUNTRY_NAME"
+scp -r -i $SRC_DIR/id_downstream_server $SRC_DIR/$SYNC_DIR/* $SYNC_ACCOUNT@$DOMAIN:$SYNC_DIR/$COUNTRY_NAME
 
 rm $SRC_DIR/$SYNC_DIR/*.sql
 
