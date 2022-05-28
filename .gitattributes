@@ -2,3 +2,4 @@ namecheap-config.json filter=git-crypt diff=git-crypt
 letsencrypt-config.json filter=git-crypt-raspberrypi diff=git-crypt-raspberrypi
 id_downstream_server filter=git-crypt-raspberrypi diff=git-crypt-raspberrypi
 data-backup-config.json filter=git-crypt-raspberrypi diff=git-crypt-raspberrypi
+hostname-file-templates/*.template filter=git-crypt-raspberrypi diff=git-crypt-raspberrypi
