@@ -2,6 +2,7 @@
   "templates": {
     "ROOT.xml.template": "/etc/tomcat9/Catalina/localhost/ROOT.xml",
     "hosts.template": "/etc/hosts",
-    "dnsmasq.conf.template": "/etc/dnsmasq.conf"
+    "dnsmasq.conf.template": "/etc/dnsmasq.conf",
+    "hostname": "/etc/hostname"
   }
 }
