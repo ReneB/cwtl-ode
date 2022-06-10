@@ -18,15 +18,7 @@ reconfigure_hostname() {
     echo
 
     TEMPLATES=$(jq -r '.templates | keys[]' hostname-mapping.json)
-    for TEMPLATE in $TEMPLATES; do
-        TARGET=$(jq -r ".templates[\"$TEMPLATE\"]" hostname-mapping.json)
-
-        BASENAME=$(basename $TARGET)
-        echo "* Backing up $TARGET to hostname-backups/$BASENAME"
-        #cp $TARGET hostname-backups/$BASENAME
-        echo "* Setting hostname to $COUNTRY_NAME.cantwaittolearn-mdm.com in $TARGET"
-        #sed -e "s/REPLACEWITHCOUNTRY/$COUNTRY_NAME/" hostname-file-templates/$TEMPLATE > $TARGET
-    done
+    mkdir tmp
 
     COUNTRY_UPPER_CASE=$(echo "${COUNTRY_NAME^^}")
     case $COUNTRY_UPPER_CASE in
@@ -55,6 +47,19 @@ reconfigure_hostname() {
             read -e -p "Please enter the 2-letter country code for ${COUNTRY_NAME} (needed for WiFi configuration regulation)" COUNTRY_CODE
             ;;
     esac
+
+    for TEMPLATE in $TEMPLATES; do
+        TARGET=$(jq -r ".templates[\"$TEMPLATE\"]" hostname-mapping.json)
+
+        BASENAME=$(basename $TARGET)
+        echo "* Backing up $TARGET to hostname-backups/$BASENAME"
+        cp $TARGET hostname-backups/$BASENAME
+        echo "* Setting hostname to $COUNTRY_NAME.cantwaittolearn-mdm.com in $TARGET"
+        sed -e "s/REPLACEWITHCOUNTRYNAME/$COUNTRY_NAME/" hostname-file-templates/$TEMPLATE > tmp/$TEMPLATE
+        echo "* Setting country code to $COUNTRY_CODE in $TARGET"
+        sed -e "s/REPLACEWITHCOUNTRYCODE/$COUNTRY_CODE/" tmp/$TEMPLATE > $TARGET
+        rm tmp/$TEMPLATE
+    done
 
     echo "Setting WiFi Country Config to ${COUNTRY_CODE}..."
     iw reg set $COUNTRY_CODE
